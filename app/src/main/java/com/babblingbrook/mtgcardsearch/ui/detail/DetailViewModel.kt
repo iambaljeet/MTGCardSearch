@@ -7,13 +7,11 @@ import com.babblingbrook.mtgcardsearch.model.Card
 
 class DetailViewModel : ViewModel() {
 
-    private val _cardLiveData = MutableLiveData<Card>()
+    private val _card = MutableLiveData<Card>()
+
+    val card: LiveData<Card> get() = _card
 
     fun setCardData(card: Card?) {
-        _cardLiveData.value = card
-    }
-
-    fun getCardData() : LiveData<Card> {
-        return _cardLiveData
+        _card.value = card
     }
 }

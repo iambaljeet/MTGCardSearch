@@ -42,7 +42,7 @@ class DetailFragment : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory)[DetailViewModel::class.java]
         viewModel.setCardData(args.cardData)
 
-        viewModel.getCardData().observe(viewLifecycleOwner, Observer {
+        viewModel.card.observe(viewLifecycleOwner, Observer {
             toolbar.title = it.name
             card_image.load(it.image_uris.art_crop)
             card_type.text = it.type_line
