@@ -96,7 +96,10 @@ class SearchAdapter(private val listener: OnClickListener) :
             card.let {
                 itemView.card_name.text = it?.name
                 itemView.card_type.text = it?.typeLine
-                itemView.card_image.load(it?.image_uris?.small)
+                itemView.card_image.load(it?.image_uris?.normal) {
+                    placeholder(R.drawable.ic_card_placeholder)
+                    crossfade(true)
+                }
                 setListeners(listener, card)
             }
         }
