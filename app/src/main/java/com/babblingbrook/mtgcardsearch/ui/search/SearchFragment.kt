@@ -24,7 +24,8 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: SearchViewModel
+    @Inject
+    lateinit var viewModel: SearchViewModel
 
     private val searchResultAdapter = SearchAdapter(this)
 
@@ -43,7 +44,6 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this, viewModelFactory)[SearchViewModel::class.java]
 
         rv_cards.layoutManager = LinearLayoutManager(requireContext())
         rv_cards.addItemDecoration(DividerItemDecoration(requireContext(),
