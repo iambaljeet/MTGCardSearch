@@ -20,9 +20,19 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/ToolbarTheme"
-            app:menu="@menu/search"
-            app:popupTheme="@style/PopupTheme"
-            app:title="@string/app_name" />
+            app:title="@string/app_name">
+        </androidx.appcompat.widget.Toolbar>
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/search_field"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:textColor="#fff"
+            android:textColorHint="#fff"
+            android:hint="@string/search_hint"
+            android:gravity="bottom"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView

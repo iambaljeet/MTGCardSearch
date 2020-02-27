@@ -4,5 +4,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="error_msg">Error getting data</string>
-    <string name="cards_empty">No cards found, enter a search.</string>
+    <string name="cards_empty">No cards found</string>
+    <string name="search_hint">Search here</string>
 </resources>

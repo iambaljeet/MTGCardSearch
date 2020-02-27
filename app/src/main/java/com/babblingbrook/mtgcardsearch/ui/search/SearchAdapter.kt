@@ -19,7 +19,6 @@ class SearchAdapter(private val listener: OnClickListener) :
     private var currentNetworkState: NetworkState? = null
 
     interface OnClickListener {
-        fun onRetryClick()
         fun whenListIsUpdated(size: Int, networkState: NetworkState?)
         fun onCardRowClicked(view: View, card: Card?)
     }
@@ -39,7 +38,7 @@ class SearchAdapter(private val listener: OnClickListener) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
             R.layout.rv_card_item -> (holder as CardViewHolder).bind(getItem(position), listener)
-            R.layout.rv_state -> (holder as StateViewHolder).bind(currentNetworkState, listener)
+            R.layout.rv_state -> (holder as StateViewHolder).bind(currentNetworkState)
         }
     }
 
@@ -112,9 +111,8 @@ class SearchAdapter(private val listener: OnClickListener) :
     }
 
     class StateViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
-        fun bind(networkState: NetworkState?, callback: OnClickListener) {
+        fun bind(networkState: NetworkState?) {
             setViews(networkState)
-            itemView.state_button.setOnClickListener { callback.onRetryClick() }
         }
 
         private fun setViews(networkState: NetworkState?) {

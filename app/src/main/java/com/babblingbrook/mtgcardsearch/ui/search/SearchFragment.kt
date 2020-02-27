@@ -2,8 +2,10 @@ package com.babblingbrook.mtgcardsearch.ui.search
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.*
 import androidx.appcompat.widget.SearchView
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -38,13 +40,11 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         rv_cards.layoutManager = LinearLayoutManager(requireContext())
         rv_cards.addItemDecoration(DividerItemDecoration(requireContext(),
             LinearLayoutManager.VERTICAL))
@@ -58,17 +58,8 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
             searchResultAdapter.submitList(it)
         })
 
-        val searchBar = toolbar.menu.findItem(R.id.action_search)
-        (searchBar.actionView as SearchView).apply {
-            queryHint = "Search for cards"
-            setIconifiedByDefault(false)
-            setOnQueryTextListener(DebouncingQueryTextListener(viewLifecycleOwner) { newText ->
-                newText?.let {
-                    if (it.isNotEmpty()) {
-                        viewModel.search(it)
-                    }
-                }
-            })
+        search_field.doOnTextChanged { text, _, _, _ ->
+            viewModel.search(text.toString())
         }
     }
 
@@ -77,19 +68,10 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
         this.findNavController().navigate(action)
     }
 
-    override fun onRetryClick() {
-        viewModel.refreshFailedRequest()
-    }
-
     override fun whenListIsUpdated(size: Int, networkState: NetworkState?) {
         setInitialStates()
         if (size == 0) {
-            setSizeZeroInitialState()
             when (networkState) {
-                NetworkState.SUCCESS -> {
-                    fragment_text_network.text = getString(R.string.cards_empty)
-                    fragment_text_network.visibility = View.VISIBLE
-                }
                 NetworkState.FAILED -> {
                     fragment_text_network.text = getString(R.string.error_msg)
                     fragment_text_network.visibility = View.VISIBLE
@@ -99,11 +81,6 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
                 }
             }
         }
-    }
-
-    private fun setSizeZeroInitialState() {
-        fragment_text_network.text = getString(R.string.cards_empty)
-        fragment_text_network.visibility = View.VISIBLE
     }
 
     private fun setInitialStates() {
