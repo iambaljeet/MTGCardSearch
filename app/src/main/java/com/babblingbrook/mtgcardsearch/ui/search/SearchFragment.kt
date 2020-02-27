@@ -72,6 +72,9 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
         setInitialStates()
         if (size == 0) {
             when (networkState) {
+                NetworkState.SUCCESS -> {
+                    fragment_text_network.visibility = View.GONE
+                }
                 NetworkState.FAILED -> {
                     fragment_text_network.text = getString(R.string.error_msg)
                     fragment_text_network.visibility = View.VISIBLE

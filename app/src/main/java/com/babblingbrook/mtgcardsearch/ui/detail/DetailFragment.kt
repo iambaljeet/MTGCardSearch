@@ -44,9 +44,9 @@ class DetailFragment : Fragment() {
 
         viewModel.card.observe(viewLifecycleOwner, Observer {
             toolbar.title = it.name
-            card_image.load(it.image_uris.art_crop)
+            card_image.load(it.imageUris?.artCrop)
             card_type.text = it.type_line
-            oracle_text.text = it.oracle_text
+            oracle_text.text = it.oracleText
         })
 
         var isToolbarShown = false

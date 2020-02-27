@@ -93,12 +93,33 @@ class SearchAdapter(private val listener: OnClickListener) :
     class CardViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
         fun bind(card: Card?, listener: OnClickListener) {
             card.let {
-                itemView.card_name.text = it?.name
-                itemView.card_type.text = it?.type_line
-                itemView.card_image.load(it?.image_uris?.normal) {
-                    placeholder(R.drawable.ic_card_placeholder)
-                    crossfade(true)
+                if (it?.cardFaces != null) {
+                    itemView.card_image2.visibility = View.VISIBLE
+                    itemView.card_two_block.visibility = View.VISIBLE
+
+                    itemView.card_name.text = it.cardFaces[0].name
+                    itemView.card_name2.text = it.cardFaces[1].name
+
+                    itemView.card_type.text = it.cardFaces[0].typeLine
+                    itemView.card_type2.text = it.cardFaces[1].typeLine
+
+                    itemView.card_image.load(it.cardFaces[0].imageUris?.normal) {
+                        placeholder(R.drawable.ic_card_placeholder)
+                        crossfade(true)
+                    }
+                    itemView.card_image2.load(it.cardFaces[1].imageUris?.normal) {
+                        placeholder(R.drawable.ic_card_placeholder)
+                        crossfade(true)
+                    }
+                } else {
+                    itemView.card_name.text = it?.name
+                    itemView.card_type.text = it?.type_line
+                    itemView.card_image.load(it?.imageUris?.normal) {
+                        placeholder(R.drawable.ic_card_placeholder)
+                        crossfade(true)
+                    }
                 }
+
                 setListeners(listener, card)
             }
         }

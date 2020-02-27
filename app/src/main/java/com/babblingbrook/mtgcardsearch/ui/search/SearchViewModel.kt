@@ -25,6 +25,4 @@ class SearchViewModel(private val scryfallRepository: ScryfallRepository) : View
     fun search(query: String) {
         cardDataSource.updateQuery(query)
     }
-
-    fun refreshFailedRequest() = cardDataSource.getSource()?.retryFailedQuery()
 }

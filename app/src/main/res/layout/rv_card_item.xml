@@ -7,31 +7,79 @@
     android:layout_height="wrap_content"
     android:padding="8dp">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/card_image"
-        android:layout_width="70dp"
-        android:layout_height="100dp"
+    <LinearLayout
+        android:id="@+id/card_image_block"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/card_name"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/card_image"
+            android:layout_width="70dp"
+            android:layout_height="100dp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/card_image2"
+            android:layout_width="70dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="8dp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/card_one_block"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/card_image"
-        app:layout_constraintTop_toTopOf="@id/card_image"
-        tools:text="Ral, Caller of Storms" />
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@+id/card_image_block"
+        app:layout_constraintTop_toTopOf="@id/card_image_block">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/card_type"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/card_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:textSize="18sp"
+            tools:text="Ral, Caller of Storms" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/card_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            tools:text="Legendary Planeswalker" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/card_two_block"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-        app:layout_constraintStart_toEndOf="@+id/card_image"
-        app:layout_constraintTop_toBottomOf="@+id/card_name"
-        tools:text="Legendary Planeswalker" />
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/card_image_block"
+        app:layout_constraintTop_toBottomOf="@+id/card_one_block">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/card_name2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/card_image_block"
+            app:layout_constraintTop_toTopOf="@id/card_image_block"
+            tools:text="Ral, Caller of Storms" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/card_type2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            tools:text="Legendary Planeswalker" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
