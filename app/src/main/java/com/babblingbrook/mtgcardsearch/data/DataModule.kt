@@ -1,5 +1,7 @@
 package com.babblingbrook.mtgcardsearch.data
 
+import androidx.room.Room
+import com.babblingbrook.mtgcardsearch.MTGCardSearchApp
 import com.babblingbrook.mtgcardsearch.repository.ScryfallRepository
 import dagger.Module
 import dagger.Provides
@@ -33,7 +35,21 @@ class DataModule {
     }
 
     @Provides
-    fun provideRepository(scryfallApi: ScryfallApi): ScryfallRepository {
-        return ScryfallRepository(scryfallApi)
+    fun provideRepository(scryfallApi: ScryfallApi, cardDao: CardDao): ScryfallRepository {
+        return ScryfallRepository(scryfallApi, cardDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDatabase(application: MTGCardSearchApp): AppDatabase {
+        return Room.databaseBuilder(application,
+            AppDatabase::class.java,
+            "Scryfall.db").build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDao(appDatabase: AppDatabase): CardDao {
+        return appDatabase.cardDao()
     }
 }

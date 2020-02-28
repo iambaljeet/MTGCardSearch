@@ -3,7 +3,7 @@ package com.babblingbrook.mtgcardsearch.model
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.RawValue
 
-data class CardFaces(
+data class CardFace(
     @SerializedName("image_uris")
     val imageUris: @RawValue ImageUris?,
     @SerializedName("mana_cost")
@@ -15,4 +15,4 @@ data class CardFaces(
     val toughness: String?,
     @SerializedName("type_line")
     val typeLine: String?
-    )
+)

@@ -54,6 +54,9 @@ dependencies {
     implementation 'com.google.dagger:dagger-android-support:2.25.4'
     kapt 'com.google.dagger:dagger-compiler:2.25.4'
     kapt 'com.google.dagger:dagger-android-processor:2.25.4'
+    implementation 'androidx.room:room-runtime:2.2.4'
+    kapt 'androidx.room:room-compiler:2.2.4'
+    implementation 'androidx.room:room-ktx:2.2.4'
     implementation 'android.arch.paging:runtime:1.0.1'
     implementation 'io.coil-kt:coil:0.9.5'
 
