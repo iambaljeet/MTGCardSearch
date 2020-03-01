@@ -1,6 +1,6 @@
 package com.babblingbrook.mtgcardsearch.ui
 
-enum class ViewState {
+enum class Status {
     LOADING,
     SUCCESS,
     FAILED

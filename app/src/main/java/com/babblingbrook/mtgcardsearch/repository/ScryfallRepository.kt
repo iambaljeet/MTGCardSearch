@@ -11,22 +11,26 @@ import javax.inject.Inject
 
 class ScryfallRepository @Inject constructor(val scryfallApi: ScryfallApi, val cardDao: CardDao) {
 
-    suspend fun getCards(query: String): Result<List<Card>> {
+    suspend fun search(query: String): Result<List<Card>> {
         val searchResponse = scryfallApi.search(query)
         if (searchResponse.isSuccessful) {
             val body = searchResponse.body()
-            if (body != null && body.data.isNotEmpty()) {
-                val cardsResponse = scryfallApi.getCards(getCardIdentifiers(body.data))
-                if (cardsResponse.isSuccessful) {
-                    val cardResponseBody = cardsResponse.body()
-                    if (cardResponseBody != null) {
-                        return Result.Success(cardResponseBody.data)
-                    }
-                }
-                return Result.Error(IOException("Card search failed ${cardsResponse.code()} ${cardsResponse.message()}"))
+            if (body != null && body.isNotEmpty()) {
+                return getCards(body)
             }
         }
         return Result.Error(IOException("Card search failed ${searchResponse.code()} ${searchResponse.message()}"))
+    }
+
+    suspend fun getCards(list: List<String>) : Result<List<Card>> {
+        val response = scryfallApi.getCards(getCardIdentifiers(list))
+        if (response.isSuccessful) {
+            val body = response.body()
+            if (body != null && body.isNotEmpty()) {
+                return Result.Success(body)
+            }
+        }
+        return Result.Error(IOException("Fetching cards failed ${response.code()} ${response.message()}"))
     }
 
     private fun getCardIdentifiers(list: List<String>): CardIdentifier {

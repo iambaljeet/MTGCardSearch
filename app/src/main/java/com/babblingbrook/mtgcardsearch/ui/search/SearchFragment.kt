@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.babblingbrook.mtgcardsearch.R
 import com.babblingbrook.mtgcardsearch.model.Card
-import com.babblingbrook.mtgcardsearch.ui.ViewState
+import com.babblingbrook.mtgcardsearch.ui.Status
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_search.*
 import javax.inject.Inject
@@ -45,8 +45,8 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
             LinearLayoutManager.VERTICAL))
         rv_cards.adapter = searchResultAdapter
 
-        viewModel.viewState.observe(viewLifecycleOwner, Observer {
-            updateViewState(it)
+        viewModel.status.observe(viewLifecycleOwner, Observer {
+            updateStatus(it)
         })
         viewModel.cards.observe(viewLifecycleOwner, Observer {
             searchResultAdapter.replaceData(it)
@@ -68,17 +68,17 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
         this.findNavController().navigate(action)
     }
 
-    private fun updateViewState(viewState: ViewState) {
-        when (viewState) {
-            ViewState.LOADING -> {
+    private fun updateStatus(status: Status) {
+        when (status) {
+            Status.LOADING -> {
                 loading.visibility = View.VISIBLE
                 error.visibility = View.GONE
             }
-            ViewState.SUCCESS -> {
+            Status.SUCCESS -> {
                 loading.visibility = View.GONE
                 error.visibility = View.GONE
             }
-            ViewState.FAILED -> {
+            Status.FAILED -> {
                 loading.visibility = View.GONE
                 error.visibility = View.VISIBLE
             }
