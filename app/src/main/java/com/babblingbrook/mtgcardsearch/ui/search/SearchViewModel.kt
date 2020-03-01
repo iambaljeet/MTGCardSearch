@@ -1,28 +1,40 @@
 package com.babblingbrook.mtgcardsearch.ui.search
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations.switchMap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.LivePagedListBuilder
-import com.babblingbrook.mtgcardsearch.data.NetworkState
-import com.babblingbrook.mtgcardsearch.data.DataSourceFactory
+import com.babblingbrook.mtgcardsearch.data.Result
+import com.babblingbrook.mtgcardsearch.model.Card
 import com.babblingbrook.mtgcardsearch.repository.ScryfallRepository
-import com.babblingbrook.mtgcardsearch.util.pagedListConfig
+import com.babblingbrook.mtgcardsearch.ui.ViewState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SearchViewModel(private val scryfallRepository: ScryfallRepository) : ViewModel() {
 
-    private val cardDataSource =
-        DataSourceFactory(
-            scryfallRepository = scryfallRepository,
-            scope = viewModelScope
-        )
+    var _cards = MutableLiveData<List<Card>>()
+    var cards: LiveData<List<Card>> = _cards
+    var _viewState = MutableLiveData<ViewState>()
+    val viewState: LiveData<ViewState> = _viewState
 
-    val cards = LivePagedListBuilder(cardDataSource, pagedListConfig()).build()
-    val networkState: LiveData<NetworkState>? =
-        switchMap(cardDataSource.source) { it.getNetworkState() }
-
-    fun search(query: String) {
-        cardDataSource.updateQuery(query)
+    fun getCards(query: String) {
+        _viewState.value = ViewState.LOADING
+        viewModelScope.launch {
+            if (query.length > 1) {
+                val result = scryfallRepository.getCards(query)
+                when (result) {
+                    is Result.Success -> {
+                        _viewState.value = ViewState.SUCCESS
+                        _cards.value = result.data
+                    }
+                    is Result.Error -> {
+                        _viewState.value = ViewState.FAILED
+                        throw result.exception
+                    }
+                }
+            }
+        }
     }
 }

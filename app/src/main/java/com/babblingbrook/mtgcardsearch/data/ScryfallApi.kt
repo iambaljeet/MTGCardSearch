@@ -1,13 +1,19 @@
 package com.babblingbrook.mtgcardsearch.data
 
-import com.babblingbrook.mtgcardsearch.model.NetworkResponse
-import retrofit2.http.GET
-import retrofit2.http.Query
+import com.babblingbrook.mtgcardsearch.model.CardData
+import com.babblingbrook.mtgcardsearch.model.CardIdentifier
+import com.babblingbrook.mtgcardsearch.model.SearchData
+import retrofit2.Response
+import retrofit2.http.*
 
 interface ScryfallApi {
-    @GET("/cards/search")
+    @Headers("Content-Type: application/json")
+    @POST("/cards/collection")
+    suspend fun getCards(@Body identifier: CardIdentifier): Response<CardData>
+
+
+    @GET("/cards/autocomplete")
     suspend fun search(
-        @Query("q") query: String,
-        @Query("page") page: Int
-    ): NetworkResponse
+        @Query("q") query: String?
+    ): Response<SearchData>
 }
