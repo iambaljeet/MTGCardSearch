@@ -3,6 +3,8 @@ package com.babblingbrook.mtgcardsearch.data
 import androidx.room.Room
 import com.babblingbrook.mtgcardsearch.MTGCardSearchApp
 import com.babblingbrook.mtgcardsearch.repository.ScryfallRepository
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient

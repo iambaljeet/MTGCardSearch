@@ -3,6 +3,7 @@ package com.babblingbrook.mtgcardsearch.model
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
@@ -23,5 +24,6 @@ data class Card(
     @SerializedName("mana_cost")
     val manaCost: String?,
     @SerializedName("card_faces")
-    val cardFaces: @RawValue List<CardFace>?
+    val cardFaces: @RawValue List<CardFace>?,
+    var isFavorite: Boolean = false
 ) : Parcelable

@@ -15,26 +15,34 @@ class ScryfallRepository @Inject constructor(val scryfallApi: ScryfallApi, val c
         val searchResponse = scryfallApi.search(query)
         if (searchResponse.isSuccessful) {
             val body = searchResponse.body()
-            if (body != null && body.isNotEmpty()) {
-                return getCards(body)
+            if (body != null) {
+                val cardResponse = scryfallApi.getCards(getCardIdentifiers(body.data))
+                if (cardResponse.isSuccessful) {
+                    val cardResponseBody = cardResponse.body()
+                    if (cardResponseBody != null) {
+                        return Result.Success(cardResponseBody.data)
+                    }
+                }
+                return Result.Error(IOException("Fetching cards failed ${cardResponse.code()} ${cardResponse.message()}"))
             }
         }
         return Result.Error(IOException("Card search failed ${searchResponse.code()} ${searchResponse.message()}"))
     }
 
-    suspend fun getCards(list: List<String>) : Result<List<Card>> {
-        val response = scryfallApi.getCards(getCardIdentifiers(list))
-        if (response.isSuccessful) {
-            val body = response.body()
-            if (body != null && body.isNotEmpty()) {
-                return Result.Success(body)
-            }
-        }
-        return Result.Error(IOException("Fetching cards failed ${response.code()} ${response.message()}"))
-    }
-
     private fun getCardIdentifiers(list: List<String>): CardIdentifier {
         val identifierList = list.map { Identifiers(it) }
         return CardIdentifier(identifierList)
+    }
+
+    suspend fun getFavorites() : List<Card> {
+        return cardDao.getAllCards()
+    }
+
+    suspend fun addFavorite(card: Card) {
+        cardDao.insertCard(card)
+    }
+
+    suspend fun removeFavorite(name: String) {
+        cardDao.deleteCard(name)
     }
 }

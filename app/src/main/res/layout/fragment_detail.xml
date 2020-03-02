@@ -79,7 +79,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
             </androidx.cardview.widget.CardView>
 
             <RelativeLayout
@@ -100,6 +99,14 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     tools:text="Legendary Planeswalker" />
+
+                <ImageView
+                    android:id="@+id/favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:tint="#fff"
+                    app:srcCompat="@drawable/ic_favorite_border" />
             </RelativeLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

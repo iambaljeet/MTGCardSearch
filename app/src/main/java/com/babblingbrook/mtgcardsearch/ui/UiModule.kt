@@ -7,6 +7,8 @@ import com.babblingbrook.mtgcardsearch.model.Card
 import com.babblingbrook.mtgcardsearch.repository.ScryfallRepository
 import com.babblingbrook.mtgcardsearch.ui.detail.DetailFragment
 import com.babblingbrook.mtgcardsearch.ui.detail.DetailViewModel
+import com.babblingbrook.mtgcardsearch.ui.favorites.FavoritesFragment
+import com.babblingbrook.mtgcardsearch.ui.favorites.FavoritesViewModel
 import com.babblingbrook.mtgcardsearch.ui.search.SearchViewModel
 import com.babblingbrook.mtgcardsearch.ui.search.SearchFragment
 import dagger.Module
@@ -26,6 +28,9 @@ abstract class UiModule {
 
     @ContributesAndroidInjector(modules = [InjectIntoFragment::class])
     abstract fun bindDetailFragment(): DetailFragment
+
+    @ContributesAndroidInjector(modules = [InjectIntoFragment::class])
+    abstract fun bindFavoritesFragment(): FavoritesFragment
 
     @Module
     class ProvideViewModelFactory {
@@ -50,7 +55,14 @@ abstract class UiModule {
         @Provides
         @IntoMap
         @ViewModelKey(DetailViewModel::class)
-        fun provideDetailViewModel(): ViewModel = DetailViewModel()
+        fun provideDetailViewModel(scryfallRepository: ScryfallRepository): ViewModel =
+            DetailViewModel(scryfallRepository)
+
+        @Provides
+        @IntoMap
+        @ViewModelKey(FavoritesViewModel::class)
+        fun provideFavoritesViewModel(scryfallRepository: ScryfallRepository): ViewModel =
+            FavoritesViewModel(scryfallRepository)
     }
 
     @Module
@@ -68,5 +80,12 @@ abstract class UiModule {
             target: DetailFragment
         ): DetailViewModel =
             ViewModelProvider(target, factory).get(DetailViewModel::class.java)
+
+        @Provides
+        fun provideFavoritesViewModel(
+            factory: ViewModelProvider.Factory,
+            target: FavoritesFragment
+        ): FavoritesViewModel =
+            ViewModelProvider(target, factory).get(FavoritesViewModel::class.java)
     }
 }
