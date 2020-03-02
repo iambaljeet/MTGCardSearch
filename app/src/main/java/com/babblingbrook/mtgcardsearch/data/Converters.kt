@@ -1,7 +1,6 @@
 package com.babblingbrook.mtgcardsearch.data
 
 import androidx.room.TypeConverter
-import com.babblingbrook.mtgcardsearch.model.Card
 import com.babblingbrook.mtgcardsearch.model.CardFace
 import com.babblingbrook.mtgcardsearch.model.ImageUris
 import com.google.gson.Gson
@@ -15,9 +14,10 @@ class Converters {
         return if (cardFaces == null) null else gson.toJson(cardFaces)
     }
 
-    @TypeConverter fun stringToCardFaces(json: String?): List<CardFace>? {
+    @TypeConverter
+    fun stringToCardFaces(json: String?): List<CardFace>? {
         val gson = Gson()
-        val listType: Type = object: TypeToken<CardFace>() {}.type
+        val listType: Type = object : TypeToken<CardFace>() {}.type
         if (json.isNullOrEmpty()) {
             return null
         } else {
@@ -25,12 +25,14 @@ class Converters {
         }
     }
 
-    @TypeConverter fun imageUriToString(imageUris: ImageUris?): String? {
+    @TypeConverter
+    fun imageUriToString(imageUris: ImageUris?): String? {
         val gson = Gson()
         return if (imageUris == null) null else gson.toJson(imageUris)
     }
 
-    @TypeConverter fun stringToImageUris(json: String): ImageUris {
+    @TypeConverter
+    fun stringToImageUris(json: String): ImageUris {
         val gson = Gson()
         return gson.fromJson(json, ImageUris::class.java)
     }

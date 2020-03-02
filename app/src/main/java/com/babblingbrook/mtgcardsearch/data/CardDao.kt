@@ -1,12 +1,15 @@
 package com.babblingbrook.mtgcardsearch.data
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.babblingbrook.mtgcardsearch.model.Card
 
 @Dao
 interface CardDao {
     @Query("SELECT * FROM Card WHERE name = :query")
-    suspend fun cardByName(query: String) : Card
+    suspend fun cardByName(query: String): Card
 
     @Query("SELECT * FROM Card")
     suspend fun getAllCards(): List<Card>

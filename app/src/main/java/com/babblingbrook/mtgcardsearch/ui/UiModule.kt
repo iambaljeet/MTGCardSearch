@@ -3,14 +3,13 @@ package com.babblingbrook.mtgcardsearch.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.babblingbrook.mtgcardsearch.di.ViewModelKey
-import com.babblingbrook.mtgcardsearch.model.Card
 import com.babblingbrook.mtgcardsearch.repository.ScryfallRepository
 import com.babblingbrook.mtgcardsearch.ui.detail.DetailFragment
 import com.babblingbrook.mtgcardsearch.ui.detail.DetailViewModel
 import com.babblingbrook.mtgcardsearch.ui.favorites.FavoritesFragment
 import com.babblingbrook.mtgcardsearch.ui.favorites.FavoritesViewModel
-import com.babblingbrook.mtgcardsearch.ui.search.SearchViewModel
 import com.babblingbrook.mtgcardsearch.ui.search.SearchFragment
+import com.babblingbrook.mtgcardsearch.ui.search.SearchViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector

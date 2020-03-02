@@ -2,7 +2,9 @@ package com.babblingbrook.mtgcardsearch.ui.search
 
 import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -41,21 +43,29 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         rv_cards.layoutManager = LinearLayoutManager(requireContext())
-        rv_cards.addItemDecoration(DividerItemDecoration(requireContext(),
-            LinearLayoutManager.VERTICAL))
+        rv_cards.addItemDecoration(
+            DividerItemDecoration(
+                requireContext(),
+                LinearLayoutManager.VERTICAL
+            )
+        )
         rv_cards.adapter = searchResultAdapter
 
-        viewModel.status.observe(viewLifecycleOwner, Observer {
-            updateStatus(it)
-        })
         viewModel.cards.observe(viewLifecycleOwner, Observer {
-            searchResultAdapter.replaceData(it)
+            when (it) {
+                is Status.Success -> {
+                    hideStatusViews()
+                    searchResultAdapter.replaceData(it.data)
+                }
+                is Status.Loading -> showLoading()
+                is Status.Error -> showError()
+            }
         })
 
         search_field.doOnTextChanged { text, _, _, _ ->
             if (text != null) {
                 if (text.length > 1) {
-                    viewModel.getCards(text.toString())
+                    viewModel.search(text.toString())
                 } else {
                     searchResultAdapter.clearData()
                 }
@@ -68,20 +78,18 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
         this.findNavController().navigate(action)
     }
 
-    private fun updateStatus(status: Status) {
-        when (status) {
-            Status.LOADING -> {
-                loading.visibility = View.VISIBLE
-                error.visibility = View.GONE
-            }
-            Status.SUCCESS -> {
-                loading.visibility = View.GONE
-                error.visibility = View.GONE
-            }
-            Status.FAILED -> {
-                loading.visibility = View.GONE
-                error.visibility = View.VISIBLE
-            }
-        }
+    private fun showLoading() {
+        loading.visibility = View.VISIBLE
+        error.visibility = View.GONE
+    }
+
+    private fun showError() {
+        error.visibility = View.VISIBLE
+        loading.visibility = View.GONE
+    }
+
+    private fun hideStatusViews() {
+        loading.visibility = View.GONE
+        error.visibility = View.GONE
     }
 }
