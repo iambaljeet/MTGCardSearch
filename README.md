@@ -6,11 +6,12 @@ Example application to demonstrate a working example of several concepts. Adding
 
 This example is built using:
 * androidx libraries, including Constraint Layout, Core KTX libraries, Material Design
-* Android Architecture libraries, including Lifecycle, ViewModel, LiveData, Navigation UI, Paging
+* Android Architecture libraries, including Lifecycle, ViewModel, LiveData, Navigation UI
+* Room
 * Retrofit
 * Dagger2
 * Coil image loading library
-* Kotlin coroutines
+* Kotlin coroutines and Flow
 
 * API used for this example is from [Scryfall](http://scryfall.com)
 
@@ -21,10 +22,7 @@ This example is built using:
 Basic structure is built, but still many items to complete before it can be added to the existing application. These include:
 
 * Testing
-* Additional error handling on network calls
 * Adding additional fields for card objects to display in UI
 * Building additional UI elements for additional fields
-* Add Room to cache card objects from API
-* Transitions from list to detail view
 
 I will update this to do list as more items are discovered, as well as when items are completed.
