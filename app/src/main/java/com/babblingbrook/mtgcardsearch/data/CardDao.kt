@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.babblingbrook.mtgcardsearch.model.Card
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CardDao {
@@ -12,7 +13,7 @@ interface CardDao {
     suspend fun cardByName(query: String): Card
 
     @Query("SELECT * FROM Card")
-    suspend fun getAllCards(): List<Card>
+    fun getAllCards(): Flow<List<Card>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCard(card: Card)
