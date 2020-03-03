@@ -25,11 +25,13 @@ class ScryfallRepository @Inject constructor(val scryfallApi: ScryfallApi, val c
                     if (cardResponseBody != null) {
                         emit(Status.success(cardResponseBody.data))
                     }
+                } else {
+                    emit(Status.error(cardResponse.message()))
                 }
-                emit(Status.error(cardResponse.message()))
             }
+        } else {
+            emit(Status.error(searchResponse.message()))
         }
-        emit(Status.error(searchResponse.message()))
     }
 
     private fun getCardIdentifiers(list: List<String>): CardIdentifier {

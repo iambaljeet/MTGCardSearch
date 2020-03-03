@@ -7,19 +7,16 @@ import com.babblingbrook.mtgcardsearch.ui.Status
 
 class SearchViewModel(private val scryfallRepository: ScryfallRepository) : ViewModel() {
 
-    private val _query = MutableLiveData<String>()
-    private val query = _query
+    private val query = MutableLiveData<String>()
 
     fun search(value: String) {
-        _query.value = value
+        query.value = value
     }
 
     val cards: LiveData<Status<List<Card>>> =
         Transformations.switchMap(query) { query -> getCards(query) }
 
-    fun getCards(query: String): LiveData<Status<List<Card>>> {
+    private fun getCards(query: String): LiveData<Status<List<Card>>> {
         return scryfallRepository.search(query).asLiveData()
     }
-
-
 }

@@ -22,8 +22,6 @@ import javax.inject.Inject
 class FavoritesFragment : Fragment(), FavoritesAdapter.OnClickListener {
 
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    @Inject
     lateinit var viewModel: FavoritesViewModel
 
     private val favoritesAdapter = FavoritesAdapter(listOf(), this)

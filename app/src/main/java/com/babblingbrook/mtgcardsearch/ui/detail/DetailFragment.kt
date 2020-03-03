@@ -23,8 +23,6 @@ class DetailFragment : Fragment() {
     private val args: DetailFragmentArgs by navArgs()
 
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    @Inject
     lateinit var viewModel: DetailViewModel
 
     private lateinit var card: Card

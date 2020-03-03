@@ -2,13 +2,13 @@ package com.babblingbrook.mtgcardsearch.ui.search
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,8 +21,6 @@ import javax.inject.Inject
 
 class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject
     lateinit var viewModel: SearchViewModel
 
@@ -50,7 +48,6 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
             )
         )
         rv_cards.adapter = searchResultAdapter
-
         viewModel.cards.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Status.Success -> {
@@ -61,9 +58,12 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
                 is Status.Error -> showError()
             }
         })
+    }
 
+    override fun onResume() {
+        super.onResume()
         search_field.doOnTextChanged { text, _, _, _ ->
-            if (text != null) {
+            text?.let {
                 if (text.length > 1) {
                     viewModel.search(text.toString())
                 } else {
