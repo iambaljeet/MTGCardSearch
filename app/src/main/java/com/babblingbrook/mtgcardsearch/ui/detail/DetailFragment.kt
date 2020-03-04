@@ -56,7 +56,26 @@ class DetailFragment : Fragment() {
             }
 
             it.oracleText?.let {oracleText ->
-                oracle_text.append(parseMana(oracleText))
+                oracle_text.visibility = View.VISIBLE
+                oracle_text.text = parseMana(oracleText)
+            }
+
+            it.flavorText?.let{flavorText ->
+                flavor_text.visibility = View.VISIBLE
+                flavor_text.text = flavorText
+            }
+
+            it.manaCost?.let {manaCost ->
+                mana_cost.text = parseMana(manaCost)
+            }
+
+            it.loyalty?.let {loyalty ->
+                power_toughness.text = loyalty
+            }
+
+            if (it.power != null && it.toughness != null) {
+                power_toughness.text =
+                    resources.getString(R.string.power_toughness, it.power, it.toughness)
             }
         })
 

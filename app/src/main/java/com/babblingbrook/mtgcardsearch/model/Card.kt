@@ -20,9 +20,12 @@ data class Card(
     val oracleText: String?,
     val power: String?,
     val toughness: String?,
+    val loyalty: String?,
     @SerializedName("mana_cost")
     val manaCost: String?,
     @SerializedName("card_faces")
     val cardFaces: @RawValue List<CardFace>?,
+    @SerializedName("flavor_text")
+    val flavorText: String?,
     var isFavorite: Boolean = false
 ) : Parcelable
