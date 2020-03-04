@@ -11,7 +11,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="278dp"
+        android:layout_height="320dp"
         android:animateLayoutChanges="true"
         android:background="@color/colorPrimary"
         android:fitsSystemWindows="true"
@@ -110,7 +110,4 @@
             </RelativeLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
