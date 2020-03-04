@@ -7,14 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.babblingbrook.mtgcardsearch.R
 import com.babblingbrook.mtgcardsearch.model.Card
-import com.babblingbrook.mtgcardsearch.ui.Status
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_favorites.*
 import javax.inject.Inject
@@ -49,15 +47,7 @@ class FavoritesFragment : Fragment(), FavoritesAdapter.OnClickListener {
         )
         rv_favorites.adapter = favoritesAdapter
         viewModel.cards.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is Status.Success -> {
-                    hideStatusViews()
-                    favoritesAdapter.replaceData(it.data)
-                }
-                is Status.Loading -> {
-                    showLoading()
-                }
-            }
+            favoritesAdapter.replaceData(it)
         })
 
         toolbar.setNavigationOnClickListener { view ->
@@ -68,20 +58,5 @@ class FavoritesFragment : Fragment(), FavoritesAdapter.OnClickListener {
     override fun onCardRowClicked(view: View, card: Card?) {
         val action = FavoritesFragmentDirections.actionFavoritesFragmentToDetailFragment(card)
         this.findNavController().navigate(action)
-    }
-
-    private fun showLoading() {
-        loading.visibility = View.VISIBLE
-        error.visibility = View.GONE
-    }
-
-    private fun showError() {
-        error.visibility = View.VISIBLE
-        loading.visibility = View.GONE
-    }
-
-    private fun hideStatusViews() {
-        loading.visibility = View.GONE
-        error.visibility = View.GONE
     }
 }

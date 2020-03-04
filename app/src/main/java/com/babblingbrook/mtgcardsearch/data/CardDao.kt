@@ -9,9 +9,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CardDao {
-    @Query("SELECT * FROM Card WHERE name = :query")
-    suspend fun cardByName(query: String): Card
-
     @Query("SELECT * FROM Card")
     fun getAllCards(): Flow<List<Card>>
 

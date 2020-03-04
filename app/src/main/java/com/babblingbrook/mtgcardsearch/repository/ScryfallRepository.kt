@@ -7,7 +7,6 @@ import com.babblingbrook.mtgcardsearch.model.CardIdentifier
 import com.babblingbrook.mtgcardsearch.model.Identifiers
 import com.babblingbrook.mtgcardsearch.ui.Status
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -39,12 +38,7 @@ class ScryfallRepository @Inject constructor(val scryfallApi: ScryfallApi, val c
         return CardIdentifier(identifierList)
     }
 
-    fun getFavorites(): Flow<Status<List<Card>>> = flow {
-        emit(Status.loading())
-        cardDao.getAllCards().collect {
-            emit(Status.success(it))
-        }
-    }
+    fun getFavorites(): Flow<List<Card>> = cardDao.getAllCards()
 
     suspend fun addFavorite(card: Card) {
         cardDao.insertCard(card)

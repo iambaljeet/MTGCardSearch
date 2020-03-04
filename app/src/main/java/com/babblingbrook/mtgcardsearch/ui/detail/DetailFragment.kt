@@ -50,6 +50,7 @@ class DetailFragment : Fragment() {
             card = it
             toolbar.title = it.name
             card_type.text = it.type_line
+            updateFavoritesIcon(it.isFavorite)
 
             it.imageUris?.let {imageUris->
                 card_image.load(imageUris.artCrop)
@@ -77,10 +78,6 @@ class DetailFragment : Fragment() {
                 power_toughness.text =
                     resources.getString(R.string.power_toughness, it.power, it.toughness)
             }
-        })
-
-        viewModel.isFavorite.observe(viewLifecycleOwner, Observer {
-            updateFavoritesIcon(it)
         })
 
         var isToolbarShown = false

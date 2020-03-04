@@ -27,5 +27,6 @@ data class Card(
     val cardFaces: @RawValue List<CardFace>?,
     @SerializedName("flavor_text")
     val flavorText: String?,
+    @SerializedName("is_favorite")
     var isFavorite: Boolean = false
 ) : Parcelable
