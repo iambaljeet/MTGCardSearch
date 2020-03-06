@@ -2,8 +2,8 @@ package com.babblingbrook.mtgcardsearch.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.babblingbrook.mtgcardsearch.data.Repository
 import com.babblingbrook.mtgcardsearch.di.ViewModelKey
-import com.babblingbrook.mtgcardsearch.repository.ScryfallRepository
 import com.babblingbrook.mtgcardsearch.ui.detail.DetailFragment
 import com.babblingbrook.mtgcardsearch.ui.detail.DetailViewModel
 import com.babblingbrook.mtgcardsearch.ui.favorites.FavoritesFragment
@@ -46,22 +46,22 @@ abstract class UiModule {
         @Provides
         @IntoMap
         @ViewModelKey(SearchViewModel::class)
-        fun provideSearchViewModel(scryfallRepository: ScryfallRepository): ViewModel =
+        fun provideSearchViewModel(repository: Repository): ViewModel =
             SearchViewModel(
-                scryfallRepository
+                repository
             )
 
         @Provides
         @IntoMap
         @ViewModelKey(DetailViewModel::class)
-        fun provideDetailViewModel(scryfallRepository: ScryfallRepository): ViewModel =
-            DetailViewModel(scryfallRepository)
+        fun provideDetailViewModel(repository: Repository): ViewModel =
+            DetailViewModel(repository)
 
         @Provides
         @IntoMap
         @ViewModelKey(FavoritesViewModel::class)
-        fun provideFavoritesViewModel(scryfallRepository: ScryfallRepository): ViewModel =
-            FavoritesViewModel(scryfallRepository)
+        fun provideFavoritesViewModel(repository: Repository): ViewModel =
+            FavoritesViewModel(repository)
     }
 
     @Module

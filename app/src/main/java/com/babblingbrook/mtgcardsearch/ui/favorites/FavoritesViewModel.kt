@@ -3,10 +3,10 @@ package com.babblingbrook.mtgcardsearch.ui.favorites
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import com.babblingbrook.mtgcardsearch.data.Repository
 import com.babblingbrook.mtgcardsearch.model.Card
-import com.babblingbrook.mtgcardsearch.repository.ScryfallRepository
 
-class FavoritesViewModel(private val scryfallRepository: ScryfallRepository) : ViewModel() {
+class FavoritesViewModel(private val repository: Repository) : ViewModel() {
 
-    var cards: LiveData<List<Card>> = scryfallRepository.getFavorites().asLiveData()
+    var cards: LiveData<List<Card>> = repository.getFavorites().asLiveData()
 }

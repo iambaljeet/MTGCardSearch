@@ -52,25 +52,25 @@ class DetailFragment : Fragment() {
             card_type.text = it.type_line
             updateFavoritesIcon(it.isFavorite)
 
-            it.imageUris?.let {imageUris->
+            it.imageUris?.let { imageUris ->
                 card_image.load(imageUris.artCrop)
             }
 
-            it.oracleText?.let {oracleText ->
+            it.oracleText?.let { oracleText ->
                 oracle_text.visibility = View.VISIBLE
                 oracle_text.text = parseMana(oracleText)
             }
 
-            it.flavorText?.let{flavorText ->
+            it.flavorText?.let { flavorText ->
                 flavor_text.visibility = View.VISIBLE
                 flavor_text.text = flavorText
             }
 
-            it.manaCost?.let {manaCost ->
+            it.manaCost?.let { manaCost ->
                 mana_cost.text = parseMana(manaCost)
             }
 
-            it.loyalty?.let {loyalty ->
+            it.loyalty?.let { loyalty ->
                 power_toughness.text = loyalty
             }
 
@@ -150,8 +150,10 @@ class DetailFragment : Fragment() {
                 val drawable = ContextCompat.getDrawable(requireContext(), it)
                 drawable?.let { d ->
                     d.setBounds(0, 0, 75, 75)
-                    spannable.setSpan(ImageSpan(d, ImageSpan.ALIGN_BOTTOM),
-                        matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    spannable.setSpan(
+                        ImageSpan(d, ImageSpan.ALIGN_BOTTOM),
+                        matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
                 }
             }
         }
@@ -222,5 +224,6 @@ class DetailFragment : Fragment() {
             "{R}" to R.drawable.ic_r,
             "{G}" to R.drawable.ic_g,
             "{C}" to R.drawable.ic_c,
-            "{S}" to R.drawable.ic_s)
+            "{S}" to R.drawable.ic_s
+        )
 }

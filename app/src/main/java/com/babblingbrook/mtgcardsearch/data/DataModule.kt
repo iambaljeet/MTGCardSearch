@@ -2,12 +2,10 @@ package com.babblingbrook.mtgcardsearch.data
 
 import androidx.room.Room
 import com.babblingbrook.mtgcardsearch.MTGCardSearchApp
-import com.babblingbrook.mtgcardsearch.repository.ScryfallRepository
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -22,7 +20,7 @@ class DataModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         val retrofit = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(MultipleConverterFactory())
             .baseUrl("https://api.scryfall.com")
             .client(okHttpClient)
             .build()
@@ -30,13 +28,16 @@ class DataModule {
     }
 
     @Provides
-    fun provideApi(retrofit: Retrofit): ScryfallApi {
-        return retrofit.create(ScryfallApi::class.java)
+    fun provideApiService(retrofit: Retrofit): ApiService {
+        return retrofit.create(ApiService::class.java)
     }
 
     @Provides
-    fun provideRepository(scryfallApi: ScryfallApi, cardDao: CardDao): ScryfallRepository {
-        return ScryfallRepository(scryfallApi, cardDao)
+    fun provideRepository(apiService: ApiService, cardDao: CardDao): Repository {
+        return Repository(
+            apiService,
+            cardDao
+        )
     }
 
     @Provides

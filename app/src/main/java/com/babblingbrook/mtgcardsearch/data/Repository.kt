@@ -1,24 +1,26 @@
-package com.babblingbrook.mtgcardsearch.repository
+package com.babblingbrook.mtgcardsearch.data
 
-import com.babblingbrook.mtgcardsearch.data.CardDao
-import com.babblingbrook.mtgcardsearch.data.ScryfallApi
 import com.babblingbrook.mtgcardsearch.model.Card
 import com.babblingbrook.mtgcardsearch.model.CardIdentifier
+import com.babblingbrook.mtgcardsearch.model.Feed
 import com.babblingbrook.mtgcardsearch.model.Identifiers
 import com.babblingbrook.mtgcardsearch.ui.Status
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class ScryfallRepository @Inject constructor(val scryfallApi: ScryfallApi, val cardDao: CardDao) {
+class Repository @Inject constructor(
+    val apiService: ApiService,
+    val cardDao: CardDao
+) {
 
     fun search(query: String): Flow<Status<List<Card>>> = flow {
         emit(Status.loading())
-        val searchResponse = scryfallApi.search(query)
+        val searchResponse = apiService.search(query)
         if (searchResponse.isSuccessful) {
             val body = searchResponse.body()
             if (body != null) {
-                val cardResponse = scryfallApi.getCards(getCardIdentifiers(body.data))
+                val cardResponse = apiService.getCards(getCardIdentifiers(body.data))
                 if (cardResponse.isSuccessful) {
                     val cardResponseBody = cardResponse.body()
                     if (cardResponseBody != null) {
@@ -46,5 +48,18 @@ class ScryfallRepository @Inject constructor(val scryfallApi: ScryfallApi, val c
 
     suspend fun removeFavorite(name: String) {
         cardDao.deleteCard(name)
+    }
+
+    fun getFeed(url: String): Flow<Status<Feed?>> = flow {
+        emit(Status.loading())
+        val feedResponse = apiService.getFeeds(url)
+        if (feedResponse.isSuccessful) {
+            val body = feedResponse.body()
+            if (body != null) {
+                emit(Status.success(feedResponse.body()))
+            }
+        } else {
+            emit(Status.error(feedResponse.message()))
+        }
     }
 }

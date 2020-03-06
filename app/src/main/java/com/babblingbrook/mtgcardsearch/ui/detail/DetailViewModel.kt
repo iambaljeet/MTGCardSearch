@@ -1,11 +1,14 @@
 package com.babblingbrook.mtgcardsearch.ui.detail
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.babblingbrook.mtgcardsearch.data.Repository
 import com.babblingbrook.mtgcardsearch.model.Card
-import com.babblingbrook.mtgcardsearch.repository.ScryfallRepository
 import kotlinx.coroutines.launch
 
-class DetailViewModel(private val scryfallRepository: ScryfallRepository) : ViewModel() {
+class DetailViewModel(private val repository: Repository) : ViewModel() {
 
     private val _card = MutableLiveData<Card>()
     val card: LiveData<Card> get() = _card
@@ -18,7 +21,7 @@ class DetailViewModel(private val scryfallRepository: ScryfallRepository) : View
         viewModelScope.launch {
             try {
                 card.isFavorite = true
-                scryfallRepository.addFavorite(card)
+                repository.addFavorite(card)
             } finally {
                 _card.postValue(card)
             }
@@ -29,7 +32,7 @@ class DetailViewModel(private val scryfallRepository: ScryfallRepository) : View
         viewModelScope.launch {
             try {
                 card.isFavorite = false
-                scryfallRepository.removeFavorite(card.name)
+                repository.removeFavorite(card.name)
             } finally {
                 _card.postValue(card)
             }

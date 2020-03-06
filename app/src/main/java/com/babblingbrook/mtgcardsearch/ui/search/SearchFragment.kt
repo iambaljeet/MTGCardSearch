@@ -2,7 +2,6 @@ package com.babblingbrook.mtgcardsearch.ui.search
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +24,7 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
     lateinit var viewModel: SearchViewModel
 
     private val searchResultAdapter = SearchAdapter(listOf(), this)
+    private val feedAdapter = FeedAdapter(mutableListOf())
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -48,6 +48,9 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
             )
         )
         rv_cards.adapter = searchResultAdapter
+
+        rv_feeds.layoutManager = LinearLayoutManager(requireContext())
+        rv_feeds.adapter = feedAdapter
         viewModel.cards.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Status.Success -> {
@@ -58,6 +61,21 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
                 is Status.Error -> showError()
             }
         })
+
+        viewModel.channel.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Status.Success -> {
+                    hideStatusViews()
+                    it.data?.let { feed ->
+                        feedAdapter.replaceData(feed.channel.item)
+                    }
+                }
+                is Status.Loading -> showLoading()
+                is Status.Error -> showError()
+            }
+        })
+
+        showFeeds()
     }
 
     override fun onResume() {
@@ -65,12 +83,24 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
         search_field.doOnTextChanged { text, _, _, _ ->
             text?.let {
                 if (text.length > 1) {
+                    hideFeeds()
                     viewModel.search(text.toString())
                 } else {
+                    showFeeds()
                     searchResultAdapter.clearData()
                 }
             }
         }
+    }
+
+    private fun showFeeds() {
+        rv_cards.visibility = View.GONE
+        rv_feeds.visibility = View.VISIBLE
+    }
+
+    private fun hideFeeds() {
+        rv_cards.visibility = View.VISIBLE
+        rv_feeds.visibility = View.GONE
     }
 
     override fun onCardRowClicked(view: View, card: Card?) {

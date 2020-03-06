@@ -97,10 +97,10 @@
                         android:id="@+id/flavor_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
                         android:layout_marginTop="16dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textStyle="italic" />
+                        android:textStyle="italic"
+                        android:visibility="gone" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -135,12 +135,12 @@
                     android:id="@+id/power_toughness"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textColor="#fff"
-                    android:textStyle="bold"
-                    tools:text="3/2"
+                    android:layout_marginRight="16dp"
                     android:layout_toLeftOf="@id/favorite"
-                    android:layout_marginRight="16dp" />
+                    android:textColor="#fff"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="3/2" />
             </RelativeLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
