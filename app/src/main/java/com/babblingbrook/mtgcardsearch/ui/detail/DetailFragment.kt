@@ -149,7 +149,7 @@ class DetailFragment : Fragment() {
             replacements[match]?.let {
                 val drawable = ContextCompat.getDrawable(requireContext(), it)
                 drawable?.let { d ->
-                    d.setBounds(0, 0, 75, 75)
+                    d.setBounds(0, 0, 65, 65)
                     spannable.setSpan(
                         ImageSpan(d, ImageSpan.ALIGN_BOTTOM),
                         matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
