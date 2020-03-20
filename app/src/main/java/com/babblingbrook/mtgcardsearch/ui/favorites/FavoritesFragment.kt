@@ -36,8 +36,8 @@ class FavoritesFragment : Fragment(), FavoritesAdapter.OnClickListener {
         return inflater.inflate(R.layout.fragment_favorites, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         rv_favorites.layoutManager = LinearLayoutManager(requireContext())
         rv_favorites.addItemDecoration(
             DividerItemDecoration(

@@ -25,6 +25,7 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
 
     private val searchResultAdapter = SearchAdapter(listOf(), this)
     private val feedAdapter = FeedAdapter(mutableListOf())
+    private var shouldShowFeeds = true
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -38,8 +39,8 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
         return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         rv_cards.layoutManager = LinearLayoutManager(requireContext())
         rv_cards.addItemDecoration(
             DividerItemDecoration(
@@ -75,32 +76,25 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener {
             }
         })
 
-        showFeeds()
-    }
+        setFeedVisibility(shouldShowFeeds)
 
-    override fun onResume() {
-        super.onResume()
         search_field.doOnTextChanged { text, _, _, _ ->
             text?.let {
                 if (text.length > 1) {
-                    hideFeeds()
+                    setFeedVisibility(false)
                     viewModel.search(text.toString())
                 } else {
-                    showFeeds()
+                    setFeedVisibility(true)
                     searchResultAdapter.clearData()
                 }
             }
         }
     }
 
-    private fun showFeeds() {
-        rv_cards.visibility = View.GONE
-        rv_feeds.visibility = View.VISIBLE
-    }
-
-    private fun hideFeeds() {
-        rv_cards.visibility = View.VISIBLE
-        rv_feeds.visibility = View.GONE
+    private fun setFeedVisibility(shouldShow: Boolean) {
+        shouldShowFeeds = shouldShow
+        rv_cards.visibility = if (shouldShow) View.GONE else View.VISIBLE
+        rv_feeds.visibility = if (shouldShow) View.VISIBLE else View.GONE
     }
 
     override fun onCardRowClicked(view: View, card: Card?) {
