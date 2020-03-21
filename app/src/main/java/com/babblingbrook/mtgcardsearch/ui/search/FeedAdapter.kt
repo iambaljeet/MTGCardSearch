@@ -12,8 +12,12 @@ import com.babblingbrook.mtgcardsearch.util.getDescription
 import com.babblingbrook.mtgcardsearch.util.getImageLink
 import kotlinx.android.synthetic.main.rv_feed_item.view.*
 
-class FeedAdapter(private var channel: List<Item>) :
+class FeedAdapter(private var channel: List<Item>, private val listener: OnClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    interface OnClickListener {
+        fun onFeedItemClicked(item: Item)
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -24,7 +28,7 @@ class FeedAdapter(private var channel: List<Item>) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        return (holder as CardViewHolder).bind(channel[position])
+        return (holder as CardViewHolder).bind(channel[position], listener)
     }
 
     fun replaceData(list: List<Item>) {
@@ -35,13 +39,17 @@ class FeedAdapter(private var channel: List<Item>) :
     override fun getItemCount(): Int = channel.size
 
     class CardViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
-        fun bind(item: Item) {
+        fun bind(item: Item,  listener: OnClickListener) {
             itemView.article_image.load(item.link)
             val imageLink = getImageLink(item.description)
             itemView.article_image.load(imageLink)
             itemView.article_desc.text = Html.fromHtml(getDescription(item.description))
             itemView.article_title.text = item.title
             itemView.article_date.text = item.pubDate
+
+            itemView.setOnClickListener {
+                listener.onFeedItemClicked(item)
+            }
         }
     }
 }

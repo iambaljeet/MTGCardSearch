@@ -27,7 +27,7 @@ fun getDescription(string: String): String {
 }
 
 fun getLink(string: String): String {
-    val pattern = Pattern.compile("<a\\s+(?:[^>]*?\\s+)?href=\"([^\"]*)\"")
+    val pattern = Pattern.compile("(?<=href=\")([^\"]*)")
     val matcher = pattern.matcher(string)
     var match: String? = null
     if (matcher.find()) {

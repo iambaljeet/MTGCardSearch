@@ -70,13 +70,9 @@ class SearchAdapter(private var items: List<Card>, private val listener: OnClick
                     }
                 }
 
-                setListeners(listener, card)
-            }
-        }
-
-        private fun setListeners(listener: OnClickListener, card: Card?) {
-            itemView.setOnClickListener {
-                listener.onCardRowClicked(itemView.card_image, card)
+                itemView.setOnClickListener {
+                    listener.onCardRowClicked(itemView.card_image, card)
+                }
             }
         }
     }
