@@ -16,24 +16,17 @@ import androidx.navigation.fragment.navArgs
 import coil.api.load
 import com.babblingbrook.mtgcardsearch.R
 import com.babblingbrook.mtgcardsearch.model.Card
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_detail.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.regex.Pattern
-import javax.inject.Inject
 
 class DetailFragment : Fragment() {
 
     private val args: DetailFragmentArgs by navArgs()
 
-    @Inject
-    lateinit var viewModel: DetailViewModel
+    private val viewModel by viewModel<DetailViewModel>()
 
     private lateinit var card: Card
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        AndroidSupportInjection.inject(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

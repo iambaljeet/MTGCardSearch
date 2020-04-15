@@ -7,11 +7,10 @@ import com.babblingbrook.mtgcardsearch.model.Identifiers
 import com.babblingbrook.mtgcardsearch.ui.Status
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-class Repository @Inject constructor(
-    val apiService: ApiService,
-    val cardDao: CardDao
+class Repository(
+    private val apiService: ApiService,
+    private val cardDao: CardDao
 ) {
 
     fun search(query: String): Flow<Status<List<Card>>> = flow {

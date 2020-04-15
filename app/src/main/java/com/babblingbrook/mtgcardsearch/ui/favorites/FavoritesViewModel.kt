@@ -6,7 +6,7 @@ import androidx.lifecycle.asLiveData
 import com.babblingbrook.mtgcardsearch.data.Repository
 import com.babblingbrook.mtgcardsearch.model.Card
 
-class FavoritesViewModel(private val repository: Repository) : ViewModel() {
+class FavoritesViewModel(repository: Repository) : ViewModel() {
 
     var cards: LiveData<List<Card>> = repository.getFavorites().asLiveData()
 }

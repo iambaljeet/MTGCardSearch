@@ -9,13 +9,11 @@ This example is built using:
 * Android Architecture libraries, including Lifecycle, ViewModel, LiveData, Navigation UI
 * Room
 * Retrofit
-* Dagger2
+* Koin
 * Coil image loading library
 * Kotlin coroutines and Flow
 
 * API used for this example is from [Scryfall](http://scryfall.com)
-
-* Uses MVVM architectural pattern with Single Activity / Multiple Fragments.
 
 ### To do
 

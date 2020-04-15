@@ -1,6 +1,5 @@
 package com.babblingbrook.mtgcardsearch.ui.favorites
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,21 +12,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.babblingbrook.mtgcardsearch.R
 import com.babblingbrook.mtgcardsearch.model.Card
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_favorites.*
-import javax.inject.Inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritesFragment : Fragment(), FavoritesAdapter.OnClickListener {
 
-    @Inject
-    lateinit var viewModel: FavoritesViewModel
+    private val viewModel by viewModel<FavoritesViewModel>()
 
     private val favoritesAdapter = FavoritesAdapter(listOf(), this)
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        AndroidSupportInjection.inject(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

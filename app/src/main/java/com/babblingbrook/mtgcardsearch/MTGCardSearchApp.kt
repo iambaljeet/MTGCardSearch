@@ -1,28 +1,20 @@
 package com.babblingbrook.mtgcardsearch
 
 import android.app.Application
-import com.babblingbrook.mtgcardsearch.di.AppComponent
-import com.babblingbrook.mtgcardsearch.di.DaggerAppComponent
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
-import javax.inject.Inject
+import com.babblingbrook.mtgcardsearch.di.dataModule
+import com.babblingbrook.mtgcardsearch.di.uiModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 
-open class MTGCardSearchApp : Application(), HasAndroidInjector {
-
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
-
-    lateinit var component: AppComponent
+open class MTGCardSearchApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        component = DaggerAppComponent.builder()
-            .application(this)
-            .context(this)
-            .build()
-        component.inject(this)
+        startKoin {
+            androidLogger()
+            androidContext(this@MTGCardSearchApp)
+            modules(listOf(dataModule, uiModule))
+        }
     }
-
-    override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
 }

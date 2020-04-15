@@ -1,6 +1,5 @@
 package com.babblingbrook.mtgcardsearch.ui.search
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -21,9 +20,8 @@ import com.babblingbrook.mtgcardsearch.model.Item
 import com.babblingbrook.mtgcardsearch.ui.Status
 import com.babblingbrook.mtgcardsearch.util.CustomTabHelper
 import com.babblingbrook.mtgcardsearch.util.getLink
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_search.*
-import javax.inject.Inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment(), SearchAdapter.OnClickListener, FeedAdapter.OnClickListener {
 
@@ -31,17 +29,11 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener, FeedAdapter.On
         const val BASE_FEED_URL = "https://magic.wizards.com"
     }
 
-    @Inject
-    lateinit var viewModel: SearchViewModel
+    private val viewModel by viewModel<SearchViewModel>()
 
     private val searchResultAdapter = SearchAdapter(listOf(), this)
     private val feedAdapter = FeedAdapter(mutableListOf(), this)
     private var shouldShowFeeds = true
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        AndroidSupportInjection.inject(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
