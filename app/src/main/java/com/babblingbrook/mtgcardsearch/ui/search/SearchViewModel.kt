@@ -12,20 +12,12 @@ class SearchViewModel(private val repository: Repository) : ViewModel() {
 
     private val query = MutableLiveData<String>()
 
-    var channel: LiveData<Status<Feed?>> = getFeeds()
-
-    private fun getFeeds(): LiveData<Status<Feed?>> {
-        return repository.getFeed(feedUrl).asLiveData()
-    }
+    var channel: LiveData<Status<Feed?>> = repository.getFeed(feedUrl).asLiveData()
 
     fun search(value: String) {
         query.value = value
     }
 
     val cards: LiveData<Status<List<Card>>> =
-        Transformations.switchMap(query) { query -> getCards(query) }
-
-    private fun getCards(query: String): LiveData<Status<List<Card>>> {
-        return repository.search(query).asLiveData()
-    }
+        Transformations.switchMap(query) { query -> repository.search(query).asLiveData() }
 }

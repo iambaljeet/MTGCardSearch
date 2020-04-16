@@ -42,8 +42,8 @@ class FavoritesFragment : Fragment(), FavoritesAdapter.OnClickListener {
             favoritesAdapter.replaceData(it)
         })
 
-        toolbar.setNavigationOnClickListener { view ->
-            view.findNavController().navigateUp()
+        toolbar.setNavigationOnClickListener {
+            it.findNavController().navigateUp()
         }
     }
 

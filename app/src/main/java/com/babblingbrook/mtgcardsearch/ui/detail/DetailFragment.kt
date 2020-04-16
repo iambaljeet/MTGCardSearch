@@ -45,21 +45,21 @@ class DetailFragment : Fragment() {
             card_type.text = it.type_line
             updateFavoritesIcon(it.isFavorite)
 
-            it.imageUris?.let { imageUris ->
-                card_image.load(imageUris.artCrop)
+            it.image_uris?.let { imageUris ->
+                card_image.load(imageUris.art_crop)
             }
 
-            it.oracleText?.let { oracleText ->
+            it.oracle_text?.let { oracleText ->
                 oracle_text.visibility = View.VISIBLE
                 oracle_text.text = parseMana(oracleText)
             }
 
-            it.flavorText?.let { flavorText ->
+            it.flavor_text?.let { flavorText ->
                 flavor_text.visibility = View.VISIBLE
                 flavor_text.text = flavorText
             }
 
-            it.manaCost?.let { manaCost ->
+            it.mana_cost?.let { manaCost ->
                 mana_cost.text = parseMana(manaCost)
             }
 
@@ -97,8 +97,8 @@ class DetailFragment : Fragment() {
             }
         }
 
-        toolbar.setNavigationOnClickListener { view ->
-            view.findNavController().navigateUp()
+        toolbar.setNavigationOnClickListener {
+            it.findNavController().navigateUp()
         }
     }
 

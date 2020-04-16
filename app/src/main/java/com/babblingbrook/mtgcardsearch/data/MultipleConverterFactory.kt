@@ -28,9 +28,9 @@ annotation class JsonResponse
 
 class MultipleConverterFactory : Converter.Factory() {
     override fun responseBodyConverter(
-        type: Type?,
+        type: Type,
         annotations: Array<Annotation>,
-        retrofit: Retrofit?
+        retrofit: Retrofit
     ): Converter<ResponseBody, *>? {
         for (annotation in annotations) {
             if (annotation.annotationClass.javaObjectType == XmlResponse::class.java) {
