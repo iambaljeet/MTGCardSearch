@@ -26,11 +26,11 @@ class Repository(
                         emit(Status.success(cardResponseBody.data))
                     }
                 } else {
-                    emit(Status.error<List<Card>>(cardResponse.message()))
+                    emit(Status.error(cardResponse.message()))
                 }
             }
         } else {
-            emit(Status.error<List<Card>>(searchResponse.message()))
+            emit(Status.error(searchResponse.message()))
         }
     }
 
@@ -58,7 +58,7 @@ class Repository(
                 emit(Status.success(feedResponse.body()))
             }
         } else {
-            emit(Status.error<Feed?>(feedResponse.message()))
+            emit(Status.error(feedResponse.message()))
         }
     }
 }

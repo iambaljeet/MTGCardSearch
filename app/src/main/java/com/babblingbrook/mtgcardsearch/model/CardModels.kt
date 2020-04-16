@@ -7,6 +7,10 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
 import androidx.annotation.Keep
 
+data class CardIdentifier(val identifiers: List<Identifiers>)
+
+data class Identifiers(val name: String)
+
 @Entity
 @Parcelize
 @Keep
