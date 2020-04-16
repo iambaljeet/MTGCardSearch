@@ -15,18 +15,11 @@ import com.babblingbrook.mtgcardsearch.model.Card
 import kotlinx.android.synthetic.main.fragment_favorites.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FavoritesFragment : Fragment(), FavoritesAdapter.OnClickListener {
+class FavoritesFragment : Fragment(R.layout.fragment_favorites), FavoritesAdapter.OnClickListener {
 
     private val viewModel by viewModel<FavoritesViewModel>()
 
     private val favoritesAdapter = FavoritesAdapter(listOf(), this)
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_favorites, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

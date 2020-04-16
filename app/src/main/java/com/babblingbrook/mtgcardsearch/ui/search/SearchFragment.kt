@@ -23,7 +23,7 @@ import com.babblingbrook.mtgcardsearch.util.getLink
 import kotlinx.android.synthetic.main.fragment_search.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchFragment : Fragment(), SearchAdapter.OnClickListener, FeedAdapter.OnClickListener {
+class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.OnClickListener, FeedAdapter.OnClickListener {
 
     companion object {
         const val BASE_FEED_URL = "https://magic.wizards.com"
@@ -34,13 +34,6 @@ class SearchFragment : Fragment(), SearchAdapter.OnClickListener, FeedAdapter.On
     private val searchResultAdapter = SearchAdapter(listOf(), this)
     private val feedAdapter = FeedAdapter(mutableListOf(), this)
     private var shouldShowFeeds = true
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_search, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
