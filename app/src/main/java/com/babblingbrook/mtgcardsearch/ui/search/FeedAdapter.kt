@@ -7,16 +7,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.babblingbrook.mtgcardsearch.R
-import com.babblingbrook.mtgcardsearch.model.Item
+import com.babblingbrook.mtgcardsearch.model.FeedItem
 import com.babblingbrook.mtgcardsearch.util.getDescription
 import com.babblingbrook.mtgcardsearch.util.getImageLink
 import kotlinx.android.synthetic.main.rv_feed_item.view.*
 
-class FeedAdapter(private var channel: List<Item>, private val listener: OnClickListener) :
+class FeedAdapter(private var channel: List<FeedItem>, private val listener: OnClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnClickListener {
-        fun onFeedItemClicked(item: Item)
+        fun onFeedItemClicked(item: FeedItem)
     }
 
     override fun onCreateViewHolder(
@@ -31,7 +31,7 @@ class FeedAdapter(private var channel: List<Item>, private val listener: OnClick
         return (holder as CardViewHolder).bind(channel[position], listener)
     }
 
-    fun replaceData(list: List<Item>) {
+    fun replaceData(list: List<FeedItem>) {
         channel = list
         notifyDataSetChanged()
     }
@@ -39,7 +39,7 @@ class FeedAdapter(private var channel: List<Item>, private val listener: OnClick
     override fun getItemCount(): Int = channel.size
 
     class CardViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
-        fun bind(item: Item,  listener: OnClickListener) {
+        fun bind(item: FeedItem,  listener: OnClickListener) {
             itemView.article_image.load(item.link)
             val imageLink = getImageLink(item.description)
             itemView.article_image.load(imageLink)

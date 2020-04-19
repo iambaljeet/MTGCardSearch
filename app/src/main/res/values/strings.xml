@@ -8,4 +8,5 @@
     <string name="search_hint">Search here</string>
     <string name="title_favorites">Favorites</string>
     <string name="power_toughness">%1$s/%2$s</string>
+    <string name="no_network_msg">Unable to get feed, please check internet connection.</string>
 </resources>

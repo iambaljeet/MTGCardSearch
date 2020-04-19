@@ -3,6 +3,7 @@ package com.babblingbrook.mtgcardsearch.ui.search
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.babblingbrook.mtgcardsearch.R
 import com.babblingbrook.mtgcardsearch.model.Card
-import com.babblingbrook.mtgcardsearch.model.Item
+import com.babblingbrook.mtgcardsearch.model.FeedItem
 import com.babblingbrook.mtgcardsearch.ui.Status
 import com.babblingbrook.mtgcardsearch.util.CustomTabHelper
 import com.babblingbrook.mtgcardsearch.util.getLink
@@ -52,22 +53,36 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.OnClick
             when (it) {
                 is Status.Success -> {
                     hideStatusViews()
-                    searchResultAdapter.replaceData(it.data)
+                    searchResultAdapter.replaceData(it.data as List<Card>)
                 }
                 is Status.Loading -> showLoading()
                 is Status.Error -> showError()
             }
         })
 
-        viewModel.channel.observe(viewLifecycleOwner, Observer {
-            when (it) {
+        viewModel.feedItems.observe(viewLifecycleOwner, Observer { feedList ->
+            when (feedList) {
                 is Status.Success -> {
                     hideStatusViews()
-                    it.data?.let { feed ->
-                        feedAdapter.replaceData(feed.channel.item)
+                    feedAdapter.replaceData(feedList.data)
+                }
+                is Status.Loading -> {
+                    hideStatusViews()
+                    if (!feedList.data.isNullOrEmpty()) {
+                        feedAdapter.replaceData(feedList.data)
+                    } else {
+                        showLoading()
                     }
                 }
-                is Status.Loading -> showLoading()
+                is Status.NoNetwork -> {
+                    hideStatusViews()
+                    if (!feedList.data.isNullOrEmpty()) {
+                        hideStatusViews()
+                        feedAdapter.replaceData(feedList.data)
+                    } else {
+                        showNoNetwork()
+                    }
+                }
                 is Status.Error -> showError()
             }
         })
@@ -98,7 +113,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.OnClick
         this.findNavController().navigate(action)
     }
 
-    override fun onFeedItemClicked(item: Item) {
+    override fun onFeedItemClicked(item: FeedItem) {
         val customTabHelper = CustomTabHelper()
         val customTab = CustomTabsIntent.Builder()
             .setToolbarColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
@@ -119,6 +134,11 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.OnClick
         error.visibility = View.GONE
     }
 
+    private fun showNoNetwork() {
+        no_network.visibility = View.VISIBLE
+        error.visibility = View.GONE
+    }
+
     private fun showError() {
         error.visibility = View.VISIBLE
         loading.visibility = View.GONE
@@ -127,5 +147,6 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchAdapter.OnClick
     private fun hideStatusViews() {
         loading.visibility = View.GONE
         error.visibility = View.GONE
+        no_network.visibility = View.GONE
     }
 }

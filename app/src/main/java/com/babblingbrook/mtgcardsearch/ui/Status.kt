@@ -1,22 +1,31 @@
 package com.babblingbrook.mtgcardsearch.ui
 
-sealed class Status<ResultType> {
+sealed class Status<out T> {
 
-    data class Success<ResultType>(
-        val data: ResultType
-    ) : Status<ResultType>()
+    data class Success<out T>(
+        val data: T
+    ) : Status<T>()
 
-    class Loading<ResultType> : Status<ResultType>()
+    class Loading<out T>(
+        val data: T?
+    ) : Status<T>()
 
-    data class Error<ResultType>(
-        val message: String
-    ) : Status<ResultType>()
+    data class NoNetwork<out T>(
+        val data: T?
+    ) : Status<T>()
+
+    data class Error<out T>(
+        val message: String,
+        val data: T?
+    ) : Status<T>()
 
     companion object {
-        fun <ResultType> success(data: ResultType): Status<ResultType> = Success(data)
+        fun <T> success(data: T): Status<T> = Success(data)
 
-        fun <ResultType> loading(): Status<ResultType> = Loading()
+        fun <T> loading(data: T?): Status<T> = Loading(data)
 
-        fun <ResultType> error(message: String): Status<ResultType> = Error(message)
+        fun <T> noNetwork(data: T?): Status<T> = NoNetwork(data)
+
+        fun <T> error(message: String, data: T?): Status<T> = Error(message, data)
     }
 }

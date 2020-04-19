@@ -1,36 +1,41 @@
 package com.babblingbrook.mtgcardsearch.data
 
-import com.babblingbrook.mtgcardsearch.model.Card
-import com.babblingbrook.mtgcardsearch.model.CardIdentifier
-import com.babblingbrook.mtgcardsearch.model.Feed
-import com.babblingbrook.mtgcardsearch.model.Identifiers
+import androidx.lifecycle.LiveData
+import com.babblingbrook.mtgcardsearch.model.*
 import com.babblingbrook.mtgcardsearch.ui.Status
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class Repository(
     private val apiService: ApiService,
-    private val cardDao: CardDao
+    private val cardDao: CardDao,
+    private val feedDao: FeedDao
 ) {
 
     fun search(query: String): Flow<Status<List<Card>>> = flow {
-        emit(Status.loading())
-        val searchResponse = apiService.search(query)
-        if (searchResponse.isSuccessful) {
-            val body = searchResponse.body()
-            if (body != null) {
-                val cardResponse = apiService.getCards(getCardIdentifiers(body.data))
-                if (cardResponse.isSuccessful) {
-                    val cardResponseBody = cardResponse.body()
-                    if (cardResponseBody != null) {
+        emit(Status.loading(null))
+        when (val searchResponse = apiService.search(query).await()) {
+            is ApiSuccessResponse -> {
+                when (val cardResponse = apiService.getCards(getCardIdentifiers(searchResponse.body.data)).await()) {
+                    is ApiSuccessResponse -> {
+                        val cardResponseBody = cardResponse.body
                         emit(Status.success(cardResponseBody.data))
                     }
-                } else {
-                    emit(Status.error(cardResponse.message()))
+                    is ApiNetworkError -> {
+                        emit(Status.noNetwork(null))
+                    }
+                    is ApiGenericError -> {
+                        emit(Status.error(cardResponse.errorMessage, null))
+                    }
                 }
             }
-        } else {
-            emit(Status.error(searchResponse.message()))
+            is ApiNetworkError -> {
+                emit(Status.NoNetwork(null))
+            }
+            is ApiGenericError -> {
+                emit(Status.Error(searchResponse.errorMessage, null))
+            }
         }
     }
 
@@ -49,16 +54,20 @@ class Repository(
         cardDao.deleteCard(name)
     }
 
-    fun getFeed(url: String): Flow<Status<Feed?>> = flow {
-        emit(Status.loading())
-        val feedResponse = apiService.getFeeds(url)
-        if (feedResponse.isSuccessful) {
-            val body = feedResponse.body()
-            if (body != null) {
-                emit(Status.success(feedResponse.body()))
+    suspend fun getFeed(): LiveData<Status<List<FeedItem>>> {
+        return object : NetworkBoundResource<List<FeedItem>, Feed>() {
+            override fun shouldFetch(data: List<FeedItem>?): Boolean {
+                return true
             }
-        } else {
-            emit(Status.error(feedResponse.message()))
-        }
+            override suspend fun loadFromDb(): List<FeedItem> {
+                return feedDao.loadFeedItems()
+            }
+            override suspend fun createCallAsync(): Deferred<ApiResponse<Feed>> {
+                return apiService.getFeedsAsync("https://magic.wizards.com/en/rss/rss.xml")
+            }
+            override suspend fun saveCallResults(feed: Feed) {
+                feedDao.deleteAndReplaceFeedItems(feed.channel.item)
+            }
+        }.build().asLiveData()
     }
 }
