@@ -8,101 +8,63 @@ import java.lang.reflect.Type
 
 class Converters {
     @TypeConverter
-    fun cardFacesToString(cardFaces: List<CardFaces>?): String? {
-        val gson = Gson()
-        return gson.toJson(cardFaces)
-    }
+    fun cardFacesToString(cardFaces: List<CardFaces>?): String? = toJson(cardFaces)
 
     @TypeConverter
-    fun stringToCardFaces(json: String?): List<CardFaces>? {
-        val gson = Gson()
-        val listType: Type = object : TypeToken<CardFaces>() {}.type
-        return gson.fromJson(json, listType)
-    }
+    fun stringToCardFaces(json: String?): List<CardFaces>? = fromJson(json)
 
     @TypeConverter
-    fun imageUriToString(imageUris: ImageUris?): String? {
-        val gson = Gson()
-        return gson.toJson(imageUris)
-    }
+    fun imageUriToString(imageUris: ImageUris?): String? = toJson(imageUris)
 
     @TypeConverter
-    fun stringToImageUris(json: String?): ImageUris? {
-        val gson = Gson()
-        return gson.fromJson(json, ImageUris::class.java)
-    }
+    fun stringToImageUris(json: String?): ImageUris? = fromJson(json)
 
     @TypeConverter
-    fun legalitiesToString(legalities: Legalities?): String? {
-        val gson = Gson()
-        return gson.toJson(legalities)
-    }
+    fun legalitiesToString(legalities: Legalities?): String? = toJson(legalities)
 
     @TypeConverter
-    fun stringToLegalities(json: String?): Legalities? {
-        val gson = Gson()
-        return gson.fromJson(json, Legalities::class.java)
-    }
+    fun stringToLegalities(json: String?): Legalities? = fromJson(json)
 
     @TypeConverter
-    fun multiverseIdsToString(multiverseIds: List<Int>?): String? {
-        val gson = Gson()
-        return gson.toJson(multiverseIds)
-    }
+    fun multiverseIdsToString(multiverseIds: List<Int>?): String? = toJson(multiverseIds)
 
     @TypeConverter
-    fun stringToMultiverseIds(json: String?): List<Int>? {
-        val gson = Gson()
-        val type: Type = object: TypeToken<List<Int>>(){}.type
-        return gson.fromJson(json, type)
-    }
+    fun stringToMultiverseIds(json: String?): List<Int>? = fromJson(json)
 
     @TypeConverter
-    fun colorsToString(colors: List<String>?): String? {
-        val gson = Gson()
-        return gson.toJson(colors)
-    }
+    fun colorsToString(colors: List<String>?): String? = toJson(colors)
 
     @TypeConverter
-    fun stringToColors(json: String?): List<String>? {
-        val gson = Gson()
-        val type: Type = object: TypeToken<List<String>>(){}.type
-        return gson.fromJson(json, type)
-    }
+    fun stringToColors(json: String?): List<String>? = fromJson(json)
 
     @TypeConverter
-    fun pricesToString(prices: Prices?): String? {
-        val gson = Gson()
-        return gson.toJson(prices)
-    }
+    fun pricesToString(prices: Prices?): String? = toJson(prices)
 
     @TypeConverter
-    fun stringToPrices(json: String?): Prices? {
-        val gson = Gson()
-        return gson.fromJson(json, Prices::class.java)
-    }
+    fun stringToPrices(json: String?): Prices? = fromJson(json)
 
     @TypeConverter
-    fun purchaseUrisToString(purchaseUris: PurchaseUris?): String? {
-        val gson = Gson()
-        return gson.toJson(purchaseUris)
-    }
+    fun purchaseUrisToString(purchaseUris: PurchaseUris?): String? = toJson(purchaseUris)
 
     @TypeConverter
-    fun stringToPurchaseUris(json: String?): PurchaseUris? {
-        val gson = Gson()
-        return gson.fromJson(json, PurchaseUris::class.java)
-    }
+    fun stringToPurchaseUris(json: String?): PurchaseUris? = fromJson(json)
 
     @TypeConverter
-    fun relatedUrisToString(relatedUris: RelatedUris?): String? {
-        val gson = Gson()
-        return gson.toJson(relatedUris)
-    }
+    fun relatedUrisToString(relatedUris: RelatedUris?): String? = toJson(relatedUris)
 
     @TypeConverter
-    fun stringToRelatedUris(json: String?): RelatedUris? {
+    fun stringToRelatedUris(json: String?): RelatedUris? = fromJson(json)
+
+    inline fun <reified T> fromJson(value: String?): T {
         val gson = Gson()
-        return gson.fromJson(json, RelatedUris::class.java)
+        return gson.fromJson(
+            value,
+            T::class.java
+        )
+    }
+
+    inline fun <reified T> toJson(value: T): String {
+        val gson = Gson()
+        return gson.toJson(value)
     }
 }
